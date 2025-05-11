@@ -4,41 +4,46 @@ import "fmt"
 
 func main() {
 
-	// var arrayName [size]elementType
+	// Declare an array of integers with a size of 5
 	var numbers [5]int
 
+	// Print the initial state of the numbers array (all elements are zero by default)
 	fmt.Println(numbers)
 
+	// Assign values to specific elements in the numbers array
 	numbers[0] = 100
 	numbers[4] = 200
 
+	// Print the updated numbers array
 	fmt.Println(numbers)
 
+	// Declare and initialize an array of strings with fruit names
 	fruits := [4]string{"Apple", "Orange", "Banana", "Grapes"}
 	fmt.Println("Fruits Array:", fruits)
 
+	// Demonstrate array copying
 	origialArray := [3]int{1, 2, 3}
-	copiedArray := origialArray
-	copiedArray[0] = 99
-	fmt.Println(origialArray)
-	fmt.Println(copiedArray)
+	copiedArray := origialArray // copiedArray is a copy of origialArray
+	copiedArray[0] = 99         // Modify the first element of copiedArray
+	fmt.Println(origialArray)   // Print original array to show it remains unchanged
+	fmt.Println(copiedArray)    // Print copied array to show the change
 
-	// Loops on Array
+	// Loop through the numbers array using a traditional for loop
 	for i := 0; i < len(numbers); i++ {
-		fmt.Printf("%d ", numbers[i])
+		fmt.Printf("%d ", numbers[i]) // Print each element in the numbers array
 	}
 
-	// using range function
-
+	// Loop through the fruits array using range
 	for index, value := range fruits {
-		fmt.Printf("\nIndex: %d Value:%s\n", index, value)
+		fmt.Printf("\nIndex: %d Value:%s\n", index, value) // Print index and value of each element
 	}
-	// underscore is a blank identifier which means we don't need the index variable here. 
+
+	// Use a blank identifier to ignore the index in the range loop
 	for _, value := range fruits {
-		fmt.Printf("\nValue:%s\n", value)
+		fmt.Printf("\nValue:%s\n", value) // Print only the value of each element
 	}
-	
-	// compare arrays
+
+	// Compare two arrays for equality
 	array1 := [3]int{1, 2, 3}
 	array2 := [3]int{4, 5, 6}
 
@@ -48,22 +53,19 @@ func main() {
 		fmt.Println("Arrays are not equal")
 	}
 
-	// 2D Array
-	 var matrix[3][3]int = [3][3]int{
-		 {1, 2, 3},
-		 {4, 5, 6},
-		 {7, 8, 9},
-	 }
-	 fmt.Println(matrix) 
+	// Declare and initialize a 2D array (matrix)
+	var matrix [3][3]int = [3][3]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
+	fmt.Println(matrix) // Print the entire matrix
 
-	 for _,value := range matrix {
-	 	for _, val := range value {
-	 		fmt.Print(val," ")
-	 	}
-		fmt.Println()
-	 }
-
-
-	 //
-
+	// Loop through the 2D array and print each element
+	for _, value := range matrix {
+		for _, val := range value {
+			fmt.Print(val, " ") // Print each element in the row
+		}
+		fmt.Println() // New line after each row
+	}
 }
