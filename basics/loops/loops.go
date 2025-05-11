@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main() {
+func forLoop() {
 	// Simple for loop to print numbers from 1 to 5
 	for i := 1; i <= 5; i++ {
 		fmt.Println(i) // Print the current value of i
@@ -22,4 +22,17 @@ func main() {
 		// Print the countdown from 10
 		fmt.Println(10 - i)
 	}
+}
+
+
+func whileLoop() {
+	i := 1
+	for i <= 5 {
+		fmt.Println("Iteration:", i)
+		i++
+	}
+}
+func main() {
+	forLoop() 
+	whileLoop()
 }
