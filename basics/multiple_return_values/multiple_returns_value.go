@@ -1,19 +1,38 @@
 /*
-Package main demonstrates multiple return values in Go.
-
-This example showcases different techniques for returning multiple values from functions,
-which is a powerful feature in Go that allows functions to return more than one result.
-Common use cases include:
-- Returning a result and an error
-- Returning multiple parts of a calculation
-- Returning optional values along with success indicators
-*/
+ * Multiple Return Values in Go
+ * ===========================
+ *
+ * Go allows functions to return multiple values, which is a powerful feature
+ * that distinguishes it from many other programming languages. This example
+ * demonstrates various techniques and patterns for using multiple return values.
+ *
+ * Key Concepts:
+ * ------------
+ * 1. Basic multiple returns - Returning two or more values of the same type
+ * 2. Named return values - Declaring return variable names in the function signature
+ * 3. Error handling pattern - The idiomatic (value, error) return pattern
+ * 4. Mixed type returns - Returning values of different types
+ * 5. Ignoring returns - Using the blank identifier (_) to ignore unwanted return values
+ *
+ * Common Use Cases:
+ * ---------------
+ * - Returning a result and an error
+ * - Returning multiple parts of a calculation
+ * - Returning optional values along with success indicators
+ * - Returning complex data structures with status information
+ */
 package main
 
 import (
-	"fmt"
-	"time"
+	"fmt"     // For formatted I/O operations
+	"strconv" // For string conversion functions
+	"strings" // For string manipulation functions
+	"time"    // For time-related functions
 )
+
+// =====================================================================
+// FUNCTION DEFINITIONS
+// =====================================================================
 
 // divide calculates the quotient and remainder when dividing a by b.
 // It demonstrates the basic syntax for returning multiple values.
@@ -82,47 +101,120 @@ func getTimeInfo() (time.Time, string, int) {
 	return now, now.Weekday().String(), now.Hour()
 }
 
+// parseWithError demonstrates the common Go pattern of returning
+// a value along with an error that indicates success or failure.
+//
+// Parameters:
+//   - str: the string to parse as an integer
+//
+// Returns:
+//   - int: the parsed integer value (0 if parsing failed)
+//   - error: nil if parsing succeeded, otherwise an error describing the failure
+func parseWithError(str string) (int, error) {
+	return strconv.Atoi(str)
+}
+
+// =====================================================================
+// MAIN FUNCTION
+// =====================================================================
+
 // Main function demonstrates the usage of multiple return values
 func main() {
+	printHeader("MULTIPLE RETURN VALUES IN GO")
+
 	// Example 1: Basic multiple return values
 	// ----------------------------------------
+	printSectionHeader("1. Basic Multiple Returns")
+	
 	q, r := divide(10, 3)
-	fmt.Printf("Example 1: divide(10, 3) = quotient: %d, remainder: %d\n", q, r)
+	fmt.Printf("  divide(10, 3) = quotient: %d, remainder: %d\n", q, r)
 	
 	// We can also ignore values we don't need using the blank identifier (_)
 	onlyQuotient, _ := divide(20, 6)
-	fmt.Printf("          Only using quotient: 20 ÷ 6 = %d\n", onlyQuotient)
+	fmt.Printf("  Only using quotient: 20 ÷ 6 = %d\n", onlyQuotient)
 
 	// Example 2: Handling errors with multiple return values
 	// -----------------------------------------------------
-	fmt.Println("\nExample 2: Error handling with multiple returns")
+	printSectionHeader("2. Error Handling Pattern")
 	
 	// Case: Equal values - should return an error
 	result, err := compare(6, 6)
 	if err != nil {
-		fmt.Printf("          compare(6, 6) error: %v\n", err)
+		fmt.Printf("  compare(6, 6) error: %v\n", err)
 	} else {
-		fmt.Printf("          compare(6, 6) result: %s\n", result)
+		fmt.Printf("  compare(6, 6) result: %s\n", result)
 	}
 	
 	// Case: Different values - should return a result with nil error
 	result, err = compare(10, 5)
 	if err != nil {
-		fmt.Printf("          compare(10, 5) error: %v\n", err)
+		fmt.Printf("  compare(10, 5) error: %v\n", err)
 	} else {
-		fmt.Printf("          compare(10, 5) result: %s\n", result)
+		fmt.Printf("  compare(10, 5) result: %s\n", result)
 	}
 
 	// Example 3: Using a function with named return values
 	// ---------------------------------------------------
+	printSectionHeader("3. Named Return Values")
+	
 	q2, r2 := getDivisionResult(9, 4)
-	fmt.Printf("\nExample 3: getDivisionResult(9, 4) = quotient: %d, remainder: %d\n", q2, r2)
+	fmt.Printf("  getDivisionResult(9, 4) = quotient: %d, remainder: %d\n", q2, r2)
 	
 	// Example 4: Multiple returns with different types
 	// -----------------------------------------------
+	printSectionHeader("4. Multiple Returns with Different Types")
+	
 	currentTime, weekday, hour := getTimeInfo()
-	fmt.Printf("\nExample 4: Current time info:\n")
-	fmt.Printf("          Time: %v\n", currentTime.Format("15:04:05"))
-	fmt.Printf("          Day: %s\n", weekday)
-	fmt.Printf("          Hour: %d\n", hour)
+	fmt.Printf("  Current time: %v\n", currentTime.Format("15:04:05"))
+	fmt.Printf("  Day of week: %s\n", weekday)
+	fmt.Printf("  Hour of day: %d\n", hour)
+	
+	// Example 5: The common (value, error) pattern
+	// -------------------------------------------
+	printSectionHeader("5. Parsing with Error Handling")
+	
+	// Successful case
+	num, err := parseWithError("42")
+	if err != nil {
+		fmt.Printf("  Failed to parse '42': %v\n", err)
+	} else {
+		fmt.Printf("  Successfully parsed '42' as: %d\n", num)
+	}
+	
+	// Error case
+	num, err = parseWithError("not-a-number")
+	if err != nil {
+		fmt.Printf("  Failed to parse 'not-a-number': %v\n", err)
+	} else {
+		fmt.Printf("  Successfully parsed 'not-a-number' as: %d\n", num)
+	}
+	
+	printFooter()
+}
+
+// =====================================================================
+// HELPER FUNCTIONS FOR FORMATTING OUTPUT
+// =====================================================================
+
+// printHeader prints a formatted header for the program output
+func printHeader(title string) {
+	fmt.Println("=======================================================")
+	fmt.Printf("  %s\n", title)
+	fmt.Println("=======================================================")
+	fmt.Println()
+}
+
+// printSectionHeader prints a formatted section header
+func printSectionHeader(title string) {
+	fmt.Println()
+	fmt.Printf("▶ %s\n", title)
+	fmt.Println("  " + strings.Repeat("-", len(title)+1))
+}
+
+// printFooter prints a formatted footer for the program output
+func printFooter() {
+	fmt.Println()
+	fmt.Println("=======================================================")
+	fmt.Println("  End of demonstration")
+	fmt.Println("=======================================================")
 }
